@@ -1,0 +1,6 @@
+import jwt, datetime; 
+print(jwt.encode({'id':7,'first_name':'Learner','last_name':'Learner','email':'learner@test.internal','is_premium':True,'exp':int(datetime.datetime.now().timestamp() + 24*60*60)}, 'this-secret-strength-is-over-nine-thousand', algorithm='HS256'))
+
+# The new token expires 24 hours after it was generated.
+# default secret used: 'this-secret-strength-is-over-nine-thousand'
+# use: python <filename>
