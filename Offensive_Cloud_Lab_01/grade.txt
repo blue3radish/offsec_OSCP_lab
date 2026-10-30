@@ -1,0 +1,18 @@
+Extra Mile: Offensive Cloud Lab 01
+
+exercise 1 ---- Enumeration 枚举
+完成标准：获得 aws 环境变量
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_SESSION_TOKEN
+
+exercise 2 ---- Initial Access 初始渗透
+完成标准：获得 shell，身份为 bastion_role
+
+exercise 3 ---- Privilege Escalation 提权
+完成标准：身份为 admin-mason，即获得管理员权限
+
+exercise 4 ---- Persistence 永久后门
+完成标准：创建拥有 管理员权限 的新用户cicd，隐蔽身份，删除痕迹
+
+* 完成上述每一步后按下 grade 按钮，就可以获得 经验值。
